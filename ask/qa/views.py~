@@ -8,7 +8,9 @@ def get_page(request):
         page = int(request.GET.get('page'))
     except ValueError:
         page = 1
-    questions = Question.objects.new()
+    except TypeError:
+        page = 1
+    questions = Question.objects.all().order_by('-id')
     paginator = Paginator(questions, 10)
     page = paginator.page(page)
     return render(request, 'list.html',
@@ -22,7 +24,7 @@ def get_popular(request):
         page = int(request.GET.get('page'))
     except ValueError:
         page = 1
-    questions = Question.objects.popular()
+    questions = Question.objects.all.order_by('-rating')
     paginator = Paginator(questions, 10)
     page = paginator.page(page)
     return render(request, 'list.html',
